@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { Alert, Box, Container, FormGroup, FormControlLabel, Switch } from "@mui/material";
 
-import setting from "../setting.json";
-
-const apiServerUrl = setting.apiServerUrl;
+const apiServerUrl = process.env.NEXT_PUBLIC_MUTE_SERVER_API_URL;
 
 export default function Home({ data }) {
 
