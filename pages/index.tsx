@@ -9,27 +9,22 @@ export default function Home({ data }) {
   const [alertMsg, setAlertMsg] = useState("mute is " + data.mute);
 
   const handleSwitchChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    if (evt.target.checked) {
-      fetch(apiServerUrl + "/mute")
-        .then((res) => res.json())
-        .then((data) => {
-          setMute(JSON.parse(data.mute));
-          setAlertMsg("set mute to " + data.mute);
-        })
-        .catch((err) => {
-          setAlertMsg(err.message);
-        });
-    } else {
-      fetch(apiServerUrl + "/unmute")
-        .then((res) => res.json())
-        .then((data) => {
-          setMute(JSON.parse(data.mute));
-          setAlertMsg("set mute to " + data.mute);
-        })
-        .catch((err) => {
-          setAlertMsg(err.message);
-        });
-    }
+    const action = evt.target.checked ? "mute" : "unmute";
+    fetch(`/mute/api/${action}`)
+      .then(async (res) => {
+        const result = await res.json();
+        if (!res.ok) {
+          throw new Error(result.error ?? `Request failed (${res.status})`);
+        }
+        return result;
+      })
+      .then((result) => {
+        setMute(JSON.parse(result.mute));
+        setAlertMsg("set mute to " + result.mute);
+      })
+      .catch((err) => {
+        setAlertMsg(err.message);
+      });
   };
 
   return (

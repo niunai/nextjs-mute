@@ -1,8 +1,11 @@
-version: "3.8"
 services:
   app:
     build: .
     ports:
       - "3001:3001"
+    environment:
+      NODE_TLS_REJECT_UNAUTHORIZED: "0"
     extra_hosts:
-      - "pi8.local:10.15.8.225"
+      - "pi8-1.local:10.15.8.225"
+      - "k8s-81.local:10.15.8.81"
+    restart: always
